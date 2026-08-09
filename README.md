@@ -1,4 +1,4 @@
-# JIBAS -> WhatsApp Web.js Queue Worker
+# Tutorial Konfigurasi Forward SMS Gateway ke Whatsapp Gateway
 
 ## Alur
 
