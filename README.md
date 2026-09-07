@@ -122,7 +122,3 @@ jibas-wa-bridge/
 - README.md
 - package.json / package-lock.json setelah npm install
 - .wwebjs_auth/ (dibuat otomatis)
-
-### Tech Stack yang Digunakan:
-![JavaScript](https://shields.io)
-![PHP](https://shields.io)
