@@ -109,21 +109,39 @@ async function processQueue() {
         console.log('[QUEUE] Pesan   : ' + row.wa_text);
         console.log('----------------------------------------');
 
-        let number = String(row.wa_no || '').replace(/\D/g, '');
+        // ========================================
+// NORMALISASI NOMOR WHATSAPP INTERNASIONAL
+// ========================================
 
-        if (number.startsWith('0')) {
-            number = '62' + number.substring(1);
-        }
+let rawNumber = String(row.wa_no || '').trim();
 
-        if (!number.startsWith('62')) {
-            console.log('[FAILED] Format nomor tidak valid: ' + row.wa_no);
-            return;
-        }
+// Hapus spasi, tanda +, tanda -, kurung, dll
+let number = rawNumber.replace(/\D/g, '');
 
-        const chatId = number + '@c.us';
+// Jika kosong
+if (!number) {
+    console.log('[FAILED] Nomor WhatsApp kosong: ' + rawNumber);
+    return;
+}
 
-        console.log('[SEND] Mengirim ke ' + number);
+// Nomor Indonesia dengan format lokal 08xxxx
+// otomatis diubah menjadi 628xxxx
+if (number.startsWith('0')) {
+    number = '62' + number.substring(1);
+}
 
+// Nomor yang sudah menggunakan kode negara
+// akan dibiarkan apa adanya.
+// Contoh:
+// +628123456789 -> 628123456789
+// +60123456789  -> 60123456789
+// +6591234567   -> 6591234567
+
+console.log('[NUMBER] ' + rawNumber + ' -> ' + number);
+
+const chatId = number + '@c.us';
+
+console.log('[SEND] Mengirim ke ' + number);
         const registered = await client.isRegisteredUser(chatId);
 
         if (!registered) {
